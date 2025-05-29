@@ -1,8 +1,8 @@
-const { getRandomQuestionPair } = require('../utils/questions');
-const { getRoom, getQuestions , selectRandomFaker ,  submitAnswer, getAllAnswers , getQuestion , updateVote} = require('./roomStore');
+
+const { getRoom, getQuestions , selectRandomFaker ,  submitAnswer, getAllAnswers , getQuestion , updateVote , getImpAns , resetRoom} = require('./roomStore');
 
 module.exports = (io, socket) => {
-  socket.on('start-game', ({ roomId, rounds = 3, writingTimer = 60 }, callback) => {
+  socket.on('start-game', ({ roomId }, callback) => {
     const state = getRoom(roomId);
     if (!state) return callback({ error: 'Room does not exist.' });
 
@@ -16,11 +16,10 @@ module.exports = (io, socket) => {
   socket.on('start-round' , ({roomId} , callback)=>{
     const state = getRoom(roomId);
 
-    let impSoc
-    let questionPair
-
-
     if (!state) return callback({ error: 'Room does not exist.' });
+
+    let impSoc = state.faker?.id
+    let questionPair = state.questionPair
 
     if(state.isRoundActive != true){
 
@@ -30,11 +29,7 @@ module.exports = (io, socket) => {
     questionPair = getQuestions(roomId)
 
     } 
-    else{
-      impSoc = state.faker.id
-      questionPair = state.questionPair
-    }
-         io.to(roomId).except(impSoc).emit('round-started' , {question: questionPair.real})
+    io.to(roomId).except(impSoc).emit('round-started' , {question: questionPair.real})
     socket.to(impSoc).emit('round-started' , {question: questionPair.fake})
   })
 
@@ -77,6 +72,32 @@ socket.on('submit-vote' , ({roomId , userId , votedUserId})=>{
   io.to(roomId).emit('submit-vote' , {answer})
 })
 
+
+
+socket.on('get-impQues' , ({roomId})=>{
+  const state= getRoom(roomId)
+  const imp = state.faker
+  const question = state.questionPair.fake
+  const answer = getImpAns(roomId , imp)
+
+  socket.emit('get-impQues' , ({imp , question , answer}))
+} )
+
+
+
+
+socket.on('next-round' , ({roomId , userId})=>{
+  const state = getRoom(roomId)
+
+  const player = state.players.find(p=> p.id == userId)
+  console.log(player)
+  io.to(roomId).emit('next-round' , {player});
+})
+
+
+socket.on('reset' , ({roomId})=>{
+  resetRoom(roomId)
+})
 
 
 

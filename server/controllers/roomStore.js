@@ -5,11 +5,6 @@ let rooms = {}
 function createRoom(roomId, player) {
   rooms[roomId] = {
     players: [player],
-    settings: {
-      rounds: 8,
-      writingTime: 30,
-      guessingTime: 90
-    },
     currentRound: 1,
     isRoundActive:false,
     faker: null,
@@ -129,9 +124,26 @@ const getQuestion=(roomId)=>{
 const updateVote=(roomId , userId , votedUserId) =>{
   const room = rooms[roomId]
   const user = room.players.find(player => player.id == userId)
-  const answerToUpdate = room.answers.find(a => a.user.id === votedUserId);
+  const answerToUpdate = room.answers.find(a => a.user.id == votedUserId);
   answerToUpdate.votes.push(user);
   return room.answers
+}
+
+
+const getImpAns=(roomId , imp)=>{
+  const ans = rooms[roomId].answers.find(a => a.user.id == imp.id)
+  return ans.text;
+}
+
+
+const resetRoom=(roomId)=>{
+  rooms[roomId] = {
+    currentRound: 1,
+    isRoundActive:false,
+    faker: null,
+    questionPair: null,
+    answers:[]
+  }
 }
 
 module.exports = {
@@ -148,5 +160,7 @@ module.exports = {
   submitAnswer,
   getAllAnswers,
   getQuestion,
-  updateVote
+  updateVote,
+  getImpAns,
+  resetRoom,
 }
