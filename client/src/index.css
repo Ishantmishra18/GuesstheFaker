@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+.page{
+    background:linear-gradient( 34deg, blue , rgb(255, 0, 166) , rgb(118, 15, 156) )
+}
+
+.page2{
+    background:linear-gradient(20deg , rgb(255, 0, 43) , purple , rgb(0, 68, 255));
+}
+
+
+.page3{
+    background: linear-gradient(rgb(0, 83, 225) , rgb(156, 24, 205) , rgb(233, 7, 214));
+}
