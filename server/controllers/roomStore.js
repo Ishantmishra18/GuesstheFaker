@@ -85,13 +85,11 @@ const getQuestions = (roomId) => {
   const question = getRandomQuestionPair();
   rooms[roomId].questionPair = question;
   rooms[roomId].answers = []; // Reset answers for new round
-  console.log(question)
   return question;
 };
 
 const submitAnswer = (roomId, userId, text) => {
   const room = rooms[roomId];
-  console.log('recieved', roomId)
   if (!room) {
     throw new Error("Room does not exist submitanswer");
   }
@@ -106,8 +104,9 @@ const submitAnswer = (roomId, userId, text) => {
   const user =  room.players.find(player=>player.id==userId)
   const answer = { user, text, votes:[]};
   room.answers.push(answer);
-  
+  console.log(room.answers)
   return room.players.find(player => player.id === userId);
+
 };
 
 
@@ -136,14 +135,17 @@ const getImpAns=(roomId , imp)=>{
 }
 
 
-const resetRoom=(roomId)=>{
+const resetRoom = (roomId) => {
   rooms[roomId] = {
+    ...rooms[roomId], // Preserve other properties
     currentRound: 1,
-    isRoundActive:false,
+    isRoundActive: false,
     faker: null,
     questionPair: null,
-    answers:[]
+    answers: []
   }
+
+  console.log('reset room done')
 }
 
 module.exports = {

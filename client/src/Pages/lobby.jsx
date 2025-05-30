@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import { socket } from '../utils/socket'
+import Btn from '../Components/btn'
 
 const Lobby = () => {
   const navigate = useNavigate()
@@ -106,24 +107,44 @@ const Lobby = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white p-6">
-      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
+      {/* Animated background elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {[...Array(15)].map((_, i) => (
+          <div 
+            key={i}
+            className="absolute rounded-full bg-blue-500/10 animate-float"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 10 + 5}px`,
+              height: `${Math.random() * 10 + 5}px`,
+              animationDuration: `${Math.random() * 20 + 10}s`,
+              animationDelay: `${Math.random() * 5}s`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 relative z-10">
         {/* Left Column - Room Info */}
-        <div className="flex-1 bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6">
+        <div className="flex-1 bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6 shadow-2xl">
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-2xl font-bold">Room</h1>
-                <div className="flex items-center gap-2 mt-1">
-                  <p className="font-mono bg-gray-700/50 px-3 py-1 rounded-lg">
+                <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                  Game Lobby
+                </h1>
+                <div className="flex items-center gap-2 mt-3">
+                  <p className="font-mono bg-gray-700/50 px-4 py-2 rounded-lg border border-gray-600/50">
                     {roomId}
                   </p>
-                  <button
+                    <button
                     onClick={copyRoomId}
-                    className="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg text-sm transition flex items-center gap-1"
+                    className="font-mono bg-gray-700/50 px-4 py-2 rounded-lg border border-gray-600/50 cursor-pointer transition flex items-center gap-1"
                   >
                     {copied ? (
                       <>
-                        <span>✓</span> Copied
+                        <span className='text-green-600'>✓</span> Copied!
                       </>
                     ) : (
                       <>
@@ -133,29 +154,32 @@ const Lobby = () => {
                   </button>
                 </div>
               </div>
-              <div className="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-sm">
+              <div className="bg-green-500/10 text-green-400 px-4 py-2 rounded-full text-sm border border-green-500/20">
                 {players.length} {players.length === 1 ? 'Player' : 'Players'}
               </div>
             </div>
 
             <div className="flex-1 overflow-y-auto">
-              <h2 className="text-lg font-semibold mb-4">Players</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <h2 className="text-lg font-semibold mb-4 text-gray-300">Connected Players</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {players.map((player, index) => (
                   <div 
                     key={index}
-                    className={`flex items-center gap-4 p-4 rounded-xl transition ${
-                      player.isCreator
-                        ? 'bg-purple-500/10 border border-purple-500/30' 
-                        : 'bg-gray-700/50 hover:bg-gray-700/70'
+                    className={`flex items-center gap-4 p-2 rounded-full transition-all duration-300 ${
+                      player.creator
+                        ? 'bg-purple-500/10 border border-purple-500/30 shadow-lg shadow-purple-500/10' 
+                        : 'bg-gray-700/50 hover:bg-gray-700/70 border border-gray-600/30'
                     }`}
                   >
-                    <div className="text-3xl">{player.avatar}</div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">{player.nickname}</p>
+                    <div className="text-3xl bg-black/30 p-3 rounded-full border border-white/10">
+                      {player.avatar}
                     </div>
-                    {player.isCreator && (
-                      <div className="bg-yellow-400/10 text-yellow-400 px-2 py-1 rounded-full text-xs font-bold">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium truncate text-gray-100">{player.nickname}</p>
+                      <p className="text-xs text-gray-400 mt-1">Joined</p>
+                    </div>
+                    {player.creator && (
+                      <div className="bg-yellow-400/10 text-yellow-400 px-3 py-1 rounded-full text-xs font-bold border border-yellow-400/20">
                         Host
                       </div>
                     )}
@@ -164,125 +188,33 @@ const Lobby = () => {
               </div>
             </div>
 
-            {isCreator && (
-              <button
-                onClick={handleStartGame}
-                disabled={isLoading || players.length < 2}
-                className={`mt-6 w-full py-3 rounded-xl font-bold transition ${
-                  isLoading 
-                    ? 'bg-gray-600 cursor-not-allowed' 
-                    : players.length < 2 
-                      ? 'bg-gray-600/50 cursor-not-allowed' 
-                      : 'bg-green-500 hover:bg-green-600'
-                }`}
-              >
-                {isLoading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="animate-spin">↻</span> Starting...
-                  </span>
-                ) : (
-                  `Start Game (${players.length}/${gameSettings.maxPlayers})`
+            {isCreator?(
+              <div className="mt-6 flex flex-col items-start">
+
+                <Btn
+                  text={`Start Game (${players.length}/${gameSettings.maxPlayers})`}
+                  handle={handleStartGame}
+                  disabled={isLoading || players.length < 2}
+                  dull={players.length < 3}
+                  loading={isLoading}
+                  loadingText="Starting Game..."
+                  className={`w-full py-4 text-lg font-bold ${
+                    players.length < 3 ? 'bg-gray-600/50' : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
+                  }`}
+                />
+
+                {players.length < 3 && (
+                  <p className="text-center text-gray-400 text-sm mt-2">
+                    Need at least 3 players to start
+                  </p>
                 )}
-              </button>
+              </div>
+            ):
+            (
+             <div className="text-center text-gray-400 text-sm mt-6">waiting for host to start the game...</div>
             )}
           </div>
         </div>
-
-        {/* Right Column - Settings (Host only) */}
-        {isCreator && (
-          <div className="w-full lg:w-96 bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6">
-            <h2 className="text-2xl font-bold mb-6">Game Settings</h2>
-
-            <div className="space-y-5">
-              <div>
-                <label className="block mb-2 font-medium">Rounds</label>
-                <input
-                  type="number"
-                  min="1"
-                  max="20"
-                  value={gameSettings.rounds}
-                  onChange={(e) => handleSettingChange('rounds', parseInt(e.target.value) || 1)}
-                  className="w-full p-3 bg-gray-700/70 rounded-lg border border-gray-600/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 outline-none transition"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-medium">Writing Time (seconds)</label>
-                <input
-                  type="number"
-                  min="10"
-                  max="180"
-                  value={gameSettings.writingTime}
-                  onChange={(e) => handleSettingChange('writingTime', parseInt(e.target.value) || 10)}
-                  className="w-full p-3 bg-gray-700/70 rounded-lg border border-gray-600/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 outline-none transition"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-medium">Guessing Time (seconds)</label>
-                <input
-                  type="number"
-                  min="10"
-                  max="180"
-                  value={gameSettings.guessingTime}
-                  onChange={(e) => handleSettingChange('guessingTime', parseInt(e.target.value) || 10)}
-                  className="w-full p-3 bg-gray-700/70 rounded-lg border border-gray-600/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 outline-none transition"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-medium">Max Players</label>
-                <input
-                  type="number"
-                  min="2"
-                  max="12"
-                  value={gameSettings.maxPlayers}
-                  onChange={(e) => handleSettingChange('maxPlayers', parseInt(e.target.value) || 2)}
-                  className="w-full p-3 bg-gray-700/70 rounded-lg border border-gray-600/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 outline-none transition"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-medium">Custom Words</label>
-                <textarea
-                  value={gameSettings.customWords.join(', ')}
-                  onChange={(e) => handleSettingChange('customWords', e.target.value.split(',').map(w => w.trim()))}
-                  className="w-full p-3 bg-gray-700/70 rounded-lg border border-gray-600/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 outline-none transition h-32"
-                  placeholder="e.g. apple, banana, mountain"
-                />
-                <p className="text-xs text-gray-400 mt-1">Separate words with commas</p>
-              </div>
-            </div>
-
-            <div className="mt-8 p-4 bg-gray-700/30 rounded-xl border border-gray-600/30">
-              <h3 className="font-bold mb-3 text-lg">Game Summary</h3>
-              <ul className="space-y-2">
-                <li className="flex justify-between">
-                  <span className="text-gray-400">Rounds:</span>
-                  <span className="font-medium">{gameSettings.rounds}</span>
-                </li>
-                <li className="flex justify-between">
-                  <span className="text-gray-400">Writing Time:</span>
-                  <span className="font-medium">{gameSettings.writingTime}s</span>
-                </li>
-                <li className="flex justify-between">
-                  <span className="text-gray-400">Guessing Time:</span>
-                  <span className="font-medium">{gameSettings.guessingTime}s</span>
-                </li>
-                <li className="flex justify-between">
-                  <span className="text-gray-400">Max Players:</span>
-                  <span className="font-medium">{gameSettings.maxPlayers}</span>
-                </li>
-                {gameSettings.customWords.length > 0 && (
-                  <li className="flex justify-between">
-                    <span className="text-gray-400">Custom Words:</span>
-                    <span className="font-medium">{gameSettings.customWords.length}</span>
-                  </li>
-                )}
-              </ul>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )
