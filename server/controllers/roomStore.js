@@ -6,6 +6,7 @@ function createRoom(roomId, player) {
   rooms[roomId] = {
     players: [player],
     currentRound: 1,
+    currentPhase: null,
     isRoundActive:false,
     faker: null,
     questionPair: null,
@@ -112,6 +113,7 @@ const submitAnswer = (roomId, userId, text) => {
 
 
 const getAllAnswers=(roomId)=>{
+  rooms[roomId].currentPhase = 'show'
     return rooms[roomId].answers 
   
   }

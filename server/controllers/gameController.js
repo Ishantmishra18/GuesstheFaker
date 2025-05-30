@@ -13,8 +13,13 @@ module.exports = (io, socket) => {
 
 
 
+  socket.on('get-data' , ({roomId , userId})=>{
+    
+  })
+
   socket.on('start-round' , ({roomId} , callback)=>{
     const state = getRoom(roomId);
+    state.currentPhase = 'writing'
 
     if (!state) return callback({ error: 'Room does not exist.' });
 
@@ -76,6 +81,7 @@ socket.on('submit-vote' , ({roomId , userId , votedUserId})=>{
 
 socket.on('get-impQues' , ({roomId})=>{
   const state= getRoom(roomId)
+  state.currentPhase='reveal'
   const imp = state.faker
   const question = state.questionPair.fake
   const answer = getImpAns(roomId , imp)
@@ -88,6 +94,7 @@ socket.on('get-impQues' , ({roomId})=>{
 
 socket.on('next-round' , ({roomId , userId})=>{
   const state = getRoom(roomId)
+  state.getPhase = 'writing'
 
   const player = state.players.find(p=> p.id == userId)
   console.log(player)
