@@ -189,7 +189,7 @@ const Lobby = () => {
             </div>
 
             {isCreator?(
-              <div className="mt-6 flex flex-col items-start">
+              <div className="mt-6 md:w-[20vw]">
 
                 <Btn
                   text={`Start Game (${players.length}/${gameSettings.maxPlayers})`}

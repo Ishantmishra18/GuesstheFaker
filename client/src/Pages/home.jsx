@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import avatars from '../utils/avatars'
 import { socket } from '../utils/socket'
 import Btn from '../Components/btn'
+import { HiQuestionMarkCircle } from "react-icons/hi";
+import HowToPlay from '../Components/howToPlay'
 
 const Home = () => {
   const [nickname, setNickname] = useState('')
@@ -11,10 +13,15 @@ const Home = () => {
   const [error, setError] = useState('')
   const [showAvatarModal, setShowAvatarModal] = useState(false)
   const navigate = useNavigate()
+  const [showHowToPlay, setShowHowToPlay] = useState(false)
+  const [cardShake, setCardShake] = useState(false)
+  const [roomInputShake, setRoomInputShake] = useState(false)
 
   const validateInputs = () => {
     if (!nickname || !selectedAvatar) {
-      alert('Please enter a nickname and choose an avatar.')
+      setError('You need to pick nickname and avatar before starting the round')
+      setCardShake(true)
+      setTimeout(() => setCardShake(false), 500)
       return false
     }
     return true
@@ -23,7 +30,12 @@ const Home = () => {
   const handleCreate = () => {
     if (!validateInputs()) return
     socket.emit('create-room', { nickname, avatar: selectedAvatar }, (response) => {
-      if (response?.error) { setError(response.error) }
+      if (response?.error) {
+        setError(response.error)
+        setCardShake(true)
+        setTimeout(() => setCardShake(false), 500)
+        return
+      }
       const roomId = response.roomId
       navigate(`/lobby/${roomId}`, {
         state: { nickname, avatar: selectedAvatar, isCreator: true }
@@ -33,7 +45,12 @@ const Home = () => {
 
   const handleJoin = () => {
     if (!validateInputs()) return
-    if (roomCode.length !== 5) return
+    if (roomCode.length !== 5) {
+      setError('Room code must be 5 characters')
+      setRoomInputShake(true)
+      setTimeout(() => setRoomInputShake(false), 500)
+      return
+    }
 
     socket.emit('join-room', { 
       roomId: roomCode, 
@@ -41,12 +58,19 @@ const Home = () => {
       avatar: selectedAvatar, 
       isCreator: false 
     }, (response) => {
-      if (response?.error) { setError(response.error) }
+      if (response?.error) { 
+        setError(response.error)
+        setRoomInputShake(true)
+        setTimeout(() => setRoomInputShake(false), 500)
+        return
+      }
       navigate(`/lobby/${roomCode}`, {
         state: { nickname, avatar: selectedAvatar, isCreator: false }
       })
     })
   }
+
+
 
   const openAvatarModal = () => {
     setShowAvatarModal(true)
@@ -57,7 +81,15 @@ const Home = () => {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-black text-white flex flex-col items-center justify-center p-4 md:p-6">
+    <div className="h-screen w-screen overflow-hidden bg-black text-white flex flex-col items-center justify-center p-4 md:p-6 relative">
+
+      <div className="topbar absolute top-2 left-2 flex gap-3">
+        <div className="howtoplay flex bg-black/20 z-30 rounded-full px-5 py-2 gap-3 items-center border-white/30 border-2 cursor-pointer hover:rotate-3 duration-200" onClick={()=>setShowHowToPlay(true)}>
+            <HiQuestionMarkCircle className='text-xl'/>
+            <h2 className=''>how to play</h2>
+        </div>
+
+      </div>
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
@@ -77,7 +109,7 @@ const Home = () => {
       </div>
 
       {/* Main content container */}
-      <div className="w-full h-full flex flex-col items-center justify-center relative z-10 overflow-y-auto py-4">
+      <div className="w-full h-full flex flex-col items-center justify-center relative z-10 overflow-hidden py-4">
         {/* Title section */}
         <div className="text-center mb-4 md:mb-8 w-full px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
@@ -87,7 +119,7 @@ const Home = () => {
         </div>  
 
         {/* Card container */}
-        <div className="w-full max-w-4xl bg-white/5 backdrop-blur-lg rounded-2xl p-4 md:p-8 flex flex-col lg:flex-row justify-between gap-4 md:gap-8 relative z-10 border border-white/10 shadow-2xl mb-4">
+        <div className={`w-full max-w-4xl bg-white/5 backdrop-blur-lg rounded-2xl p-4 md:p-8 flex flex-col lg:flex-row justify-between gap-4 md:gap-8 relative z-10 border border-white/10 shadow-2xl mb-4 ${cardShake ? 'animate-shake' : ''}`}>
           {/* ID Card Section */}
           <div className="relative bg-gradient-to-br border-2 py-8 md:py-12 border-white/30 from-purple-600/90 to-blue-500/90 rounded-3xl p-4 md:p-6 shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500 flex-1 mb-6 lg:mb-0">
             <div className="flex flex-col items-center gap-4 md:gap-6">
@@ -145,7 +177,7 @@ const Home = () => {
                   id="roomCode"
                   type="text"
                   placeholder="XXXXX"
-                  className="w-full px-4 py-2 md:px-5 md:py-3 rounded-2xl bg-black/40 border-2 border-yellow-400/50 focus:border-yellow-300 focus:outline-none transition-all duration-300 font-mono placeholder-yellow-400/40 text-yellow-100 shadow-lg tracking-widest text-center text-lg md:text-xl"
+                  className={`w-full px-4 py-2 md:px-5 md:py-3 rounded-2xl bg-black/40 border-2 border-yellow-400/50 focus:border-yellow-300 focus:outline-none transition-all duration-300 font-mono placeholder-yellow-400/40 text-yellow-100 shadow-lg tracking-widest text-center text-lg md:text-xl ${roomInputShake ? 'animate-shake border-red-500' : ''}`}
                   value={roomCode}
                   onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                   maxLength={5}
@@ -225,6 +257,13 @@ const Home = () => {
               ))}
             </div>
           </div>
+        </div>
+      )}
+
+
+      {showHowToPlay && (
+        <div className="w-screen h-screen bg-black/20 backdrop-blur-3xl fixed top-0 left-0 grid place-content-center z-40">
+          <HowToPlay close={setShowHowToPlay}/>
         </div>
       )}
 

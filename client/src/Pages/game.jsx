@@ -120,7 +120,6 @@ const GameRoom = () => {
       userId: socket.id,
       text: answer
     }, (response) => {
-      setAnsDis(false)
       if (response.error) {
         alert(response.error)
       } else {
@@ -144,6 +143,8 @@ const GameRoom = () => {
     if (subPlayer.length === players?.length) {
       transitionToPhase('show')
       setSubPlayer([])
+      setAnsDis(false)
+      setAnswer('')
     }
 
     return () => {
@@ -225,7 +226,6 @@ const GameRoom = () => {
 
       {/* Header */}
       <div className="flex justify-between items-center mb-8 relative z-10">
-        <Link to ='/' className='bg-red-600 text-white px-3 py-1 rounded-2xl'>Leave game</Link>
         <div className="flex gap-3">
           {subPlayer.map((p, k) => (
             <motion.div
@@ -302,10 +302,12 @@ const GameRoom = () => {
                 />
 
                 <Btn
-                  text={ansDis ? 'Submitting...' : 'Submit Answer'}
+                  text={ansDis ? 'Submited' : 'Submit Answer'}
                   handle={submitAnswer}
                   disabled={!answer.trim() || ansDis}
                   loading={ansDis}
+                  dull={ansDis}
+                  onClick={()=>setAnsDis(true)}
                   className={`mt-6 w-full py-4 text-lg ${
                     !answer.trim() || ansDis
                       ? 'bg-gray-600/50'
@@ -315,6 +317,8 @@ const GameRoom = () => {
               </motion.div>
             </motion.div>
           )}
+
+
 
           {phase === 'show' && (
             <motion.div

@@ -19,7 +19,7 @@ module.exports = (io, socket) => {
 
   socket.on('start-round' , ({roomId} , callback)=>{
     const state = getRoom(roomId);
-    state.currentPhase = 'writing'
+
 
     if (!state) return callback({ error: 'Room does not exist.' });
 

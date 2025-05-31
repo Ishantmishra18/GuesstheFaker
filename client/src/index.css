@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
-.page{
-    background:linear-gradient( 34deg, blue , rgb(255, 0, 166) , rgb(118, 15, 156) )
+
+
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
-.page2{
-    background:linear-gradient(20deg , rgb(255, 0, 43) , purple , rgb(0, 68, 255));
-}
-
-
-.page3{
-    background: linear-gradient(rgb(0, 83, 225) , rgb(156, 24, 205) , rgb(233, 7, 214));
+.animate-shake {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
 }
