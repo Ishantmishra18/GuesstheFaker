@@ -146,8 +146,10 @@ const resetRoom = (roomId) => {
     questionPair: null,
     answers: []
   }
+}
 
-  console.log('reset room done')
+const allRooms =()=>{
+  return rooms
 }
 
 module.exports = {
@@ -167,4 +169,5 @@ module.exports = {
   updateVote,
   getImpAns,
   resetRoom,
+  allRooms,
 }
