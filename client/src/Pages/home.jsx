@@ -81,7 +81,7 @@ const Home = () => {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-black text-white flex flex-col items-center justify-center p-4 md:p-6 relative">
+    <div className="h-screen w-screen md:overflow-hidden bg-black text-white flex flex-col items-center justify-center p-4 md:p-6 relative">
 
       <div className="topbar absolute top-2 left-2 flex gap-3">
         <div className="howtoplay flex bg-black/20 z-30 rounded-full px-5 py-2 gap-3 items-center border-white/30 border-2 cursor-pointer hover:rotate-3 duration-200" onClick={()=>setShowHowToPlay(true)}>

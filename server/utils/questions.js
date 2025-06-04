@@ -47,7 +47,75 @@ const questionPairs = [
   { real: "What's your most useless talent?", fake: "What's a random skill you have?" },
   { real: "If your life was a meme, what would the caption be?", fake: "What's your favorite meme?" },
   { real: "What’s the wildest thing you've done in college?", fake: "What was your last college trip?" },
-  { real: "If you had to drop out today, what would you do next?", fake: "What’s your dream job after college?" }
+  { real: "If you had to drop out today, what would you do next?", fake: "What’s your dream job after college?" },
+    {
+    real: "What's one app you can't live without?",
+    fake: "What's the last app you installed?"
+  },
+  {
+    real: "If you could time travel once, when and where would you go?",
+    fake: "Would you go to the past or future?"
+  },
+  {
+    real: "What lie do you tell the most?",
+    fake: "When was the last time you lied?"
+  },
+  {
+    real: "What’s your biggest red flag?",
+    fake: "What’s one thing that annoys you in others?"
+  },
+  {
+    real: "If you were invisible for a day, what would you do?",
+    fake: "What’s your favorite superpower?"
+  },
+  {
+    real: "What college event do you secretly hate?",
+    fake: "What’s the best fest in your college?"
+  },
+  {
+    real: "What rumor have you heard about yourself?",
+    fake: "What’s the funniest thing you’ve heard recently?"
+  },
+  {
+    real: "What’s the worst gift you've ever received?",
+    fake: "What’s your favorite birthday gift ever?"
+  },
+  {
+    real: "Which of your friends would betray you in a game for money?",
+    fake: "Who’s the most competitive person you know?"
+  },
+  {
+    real: "What's your most useless talent?",
+    fake: "What's a random skill you have?"
+  },
+  {
+    real: "If your life was a meme, what would the caption be?",
+    fake: "What's your favorite meme?"
+  },
+  {
+    real: "What’s the wildest thing you've done in college?",
+    fake: "What was your last college trip?"
+  },
+  {
+    real: "If you had to drop out today, what would you do next?",
+    fake: "What’s your dream job after college?"
+  },
+  {
+    real: "What’s the dumbest way you’ve injured yourself?",
+    fake: "What’s the last time you got hurt?"
+  },
+  {
+    real: "What’s something you’ve stolen and never returned?",
+    fake: "What’s the last thing you borrowed?"
+  },
+  {
+    real: "If you could get away with one crime, what would it be?",
+    fake: "What’s the worst crime you’ve read about?"
+  },
+  {
+    real: "What’s the cringiest phase you’ve gone through?",
+    fake: "What’s a trend you used to love?"
+  }
 ];
 
 const getRandomQuestionPair = () => {
