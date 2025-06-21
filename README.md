@@ -40,28 +40,25 @@
 ### ⚙️ Prerequisites
 
 - Node.js and npm installed
-- MongoDB running locally or an Atlas cluster URI
+- MongoDB running locally or via Atlas
 - Git installed
 
 ---
 
 ### 🔧 Step-by-Step Setup
 
-1. **Clone the repository**
-
 ```bash
+# 1. Clone the repository
 git clone https://github.com/Ishantmishra18/GuesstheFaker.git
 cd GuesstheFaker
 
-**Run Backend** 
+# 2. Run Backend
 cd server
 npm install
 npx nodemon server.js
 
-**Run Frontend**
+# (in a new terminal)
+# 3. Run Frontend
 cd client
 npm install
 npm run dev
-
-
-
