@@ -23,7 +23,7 @@
     <p align="center">Desktop View</p>
   </div>
   <div>
-    <img src="./client/public/ss/mobile.png" alt="Mobile View" style="height: 300px;">
+    <img src="./client/public/ss/mobile.jpg" alt="Mobile View" style="height: 300px;">
     <p align="center">Mobile View</p>
   </div>
 </div>
