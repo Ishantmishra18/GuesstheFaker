@@ -18,8 +18,8 @@
 ## 🖼️ Screenshots
 
 <div align="center">
-  <img src="./client/public/ss/screen.png" alt="Desktop View" width="45%">
-  <img src="./client/public/ss/mobile.jpg" alt="Mobile View" width="25%">
+  <img src="./client/public/ss/screen.png" alt="Desktop View" height="75%">
+  <img src="./client/public/ss/mobile.jpg" alt="Mobile View" height="75%">
 </div>
 
 ---
