@@ -19,7 +19,7 @@
 
 <div align="center">
   <img src="/ss/screen.png" alt="Desktop View" width="45%">
-  <img src="https://guessthefaker.onrender.com/ss/mobile.jpg" alt="Mobile View" width="25%">
+  <img src="https://guessthefaker.onrender.com/client/public/ss/mobile.jpg" alt="Mobile View" width="25%">
 </div>
 
 ---
