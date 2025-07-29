@@ -18,7 +18,7 @@
 ## 🖼️ Screenshots
 
 <div align="center">
-  <img src="https://guessthefaker.onrender.com/ss/screen.png" alt="Desktop View" width="45%">
+  <img src="/ss/screen.png" alt="Desktop View" width="45%">
   <img src="https://guessthefaker.onrender.com/ss/mobile.png" alt="Mobile View" width="25%">
 </div>
 
