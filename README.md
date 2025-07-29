@@ -17,9 +17,15 @@
 
 ## 🖼️ Screenshots
 
-<div align="center">
-  <img src="./client/public/ss/screen.png" alt="Desktop View" height="75%">
-  <img src="./client/public/ss/mobile.jpg" alt="Mobile View" height="75%">
+<div align="center" style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+  <div>
+    <img src="./client/public/ss/screen.png" alt="Desktop View" style="height: 300px;">
+    <p align="center">Desktop View</p>
+  </div>
+  <div>
+    <img src="./client/public/ss/mobile.png" alt="Mobile View" style="height: 300px;">
+    <p align="center">Mobile View</p>
+  </div>
 </div>
 
 ---
