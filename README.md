@@ -15,6 +15,15 @@
 
 ---
 
+## 🖼️ Screenshots
+
+<div align="center">
+  <img src="https://guessthefaker.onrender.com/ss/screen.png" alt="Desktop View" width="45%">
+  <img src="https://guessthefaker.onrender.com/ss/mobile.png" alt="Mobile View" width="25%">
+</div>
+
+---
+
 ## 🕹️ How to Play
 
 1. **Join a Room**: Minimum **3 players** are required to start a game.
