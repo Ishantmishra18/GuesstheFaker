@@ -45,7 +45,6 @@
 
 - **Frontend**: React, Tailwind CSS, Socket.IO Client
 - **Backend**: Node.js, Express.js, Socket.IO Server
-- **Database**: MongoDB Atlas
 - **Hosting**: Render
 
 ---
@@ -84,4 +83,5 @@ npx nodemon server.js
 cd client
 npm install
 npm run dev
+
 
