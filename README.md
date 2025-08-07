@@ -49,6 +49,19 @@
 
 ---
 
+## 👥 Contributions Welcome!
+Love the game? Want to improve it? We’d love your help! Here’s how:
+
+🐛 Report bugs by opening an issue.
+
+💡 Suggest features or improvements.
+
+🔧 Submit pull requests for fixes or enhancements.
+
+First time contributing? Check out GitHub’s guide to get started.
+
+---
+
 ## 📦 Installation (For Local Development)
 
 ### ⚙️ Prerequisites
@@ -83,5 +96,6 @@ npx nodemon server.js
 cd client
 npm install
 npm run dev
+
 
 
