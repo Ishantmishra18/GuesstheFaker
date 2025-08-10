@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import { socket } from '../utils/socket'
 import Btn from '../Components/btn'
+import { IoExitOutline } from "react-icons/io5";
+import Loader from '../Components/loader';
 
 const Lobby = () => {
   const navigate = useNavigate()
@@ -88,12 +90,6 @@ const Lobby = () => {
     })
   }
 
-  const handleSettingChange = (setting, value) => {
-    setGameSettings(prev => ({
-      ...prev,
-      [setting]: value
-    }))
-  }
 
   const copyRoomId = () => {
     navigator.clipboard.writeText(roomId)
@@ -126,6 +122,7 @@ const Lobby = () => {
       </div>
 
       <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 relative z-10">
+        {isLoading && <Loader/>}
         {/* Left Column - Room Info */}
         <div className="flex-1 bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6 shadow-2xl">
           <div className="flex flex-col h-full">
@@ -135,6 +132,9 @@ const Lobby = () => {
                   Game Lobby
                 </h1>
                 <div className="flex items-center gap-2 mt-3">
+                  <button className="font-mono bg-red-700/50 px-4 py-2 rounded-lg border border-red-600/50 cursor-pointer" onClick={() => navigate('/')}>
+                    < IoExitOutline/>
+                  </button>
                   <p className="font-mono bg-gray-700/50 px-4 py-2 rounded-lg border border-gray-600/50">
                     {roomId}
                   </p>
@@ -213,6 +213,7 @@ const Lobby = () => {
             (
              <div className="text-center text-gray-400 text-sm mt-6">waiting for host to start the game...</div>
             )}
+
           </div>
         </div>
       </div>

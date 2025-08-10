@@ -4,7 +4,10 @@ import avatars from '../utils/avatars'
 import { socket } from '../utils/socket'
 import Btn from '../Components/btn'
 import { HiQuestionMarkCircle } from "react-icons/hi";
-import HowToPlay from '../Components/howToPlay'
+import HowToPlay from '../Components/howToPlay';
+import Loader from '../Components/loader';
+import { FaGithub } from "react-icons/fa";
+import Contribute from '../Components/contribute';
 
 const Home = () => {
   const [nickname, setNickname] = useState('')
@@ -14,8 +17,10 @@ const Home = () => {
   const [showAvatarModal, setShowAvatarModal] = useState(false)
   const navigate = useNavigate()
   const [showHowToPlay, setShowHowToPlay] = useState(false)
+  const [showContribute, setShowContribute] = useState(false)
   const [cardShake, setCardShake] = useState(false)
   const [roomInputShake, setRoomInputShake] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const validateInputs = () => {
     if (!nickname || !selectedAvatar) {
@@ -29,6 +34,8 @@ const Home = () => {
 
   const handleCreate = () => {
     if (!validateInputs()) return
+    setLoading(true)
+    setError('')
     socket.emit('create-room', { nickname, avatar: selectedAvatar }, (response) => {
       if (response?.error) {
         setError(response.error)
@@ -40,6 +47,7 @@ const Home = () => {
       navigate(`/lobby/${roomId}`, {
         state: { nickname, avatar: selectedAvatar, isCreator: true }
       })
+      setLoading(false)
     })
   }
 
@@ -81,15 +89,32 @@ const Home = () => {
   }
 
   return (
-    <div className=" w-screen h-screen overflow-hidden bg-black text-white flex flex-col items-center justify-center p-4 md:p-6 relative">
+    <div className="w-screen h-screen overflow-hidden bg-black text-white flex flex-col items-center justify-center p-4 md:p-6 relative">
+      {loading && <Loader />}
 
-      <div className="topbar absolute top-2 left-2 flex gap-3">
-        <div className="howtoplay flex bg-black/20 z-30 rounded-full px-5 py-2 gap-3 items-center border-white/30 border-2 cursor-pointer hover:rotate-3 duration-200" onClick={()=>setShowHowToPlay(true)}>
+      {/* Topbar with two buttons */}
+      <div className="topbar absolute top-2 left-2 right-2 flex justify-between gap-3">
+        <div className="flex gap-3">
+          {/* How to Play Button - shows icon only on mobile */}
+          <div 
+            className="flex bg-black/20 z-30 rounded-full px-3 sm:px-5 py-2 gap-1 sm:gap-3 items-center border-white/30 border-2 cursor-pointer hover:rotate-3 duration-200" 
+            onClick={() => setShowHowToPlay(true)}
+          >
             <HiQuestionMarkCircle className='text-xl'/>
-            <h2 className=''>how to play</h2>
+            <h2 className='hidden sm:block'>how to play</h2>
+          </div>
         </div>
-
+        
+        {/* Contribute Button - shows icon only on mobile */}
+        <div 
+          className="flex bg-black/20 z-30 rounded-full px-3 sm:px-5 py-2 gap-1 sm:gap-3 items-center border-white/30 border-2 cursor-pointer hover:rotate-3 duration-200"
+          onClick={() => { setShowContribute(true) }}
+        >
+          <FaGithub className='text-xl'/>
+          <h2 className='hidden sm:block'>contribute</h2>
+        </div>
       </div>
+
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
@@ -112,23 +137,23 @@ const Home = () => {
       <div className="w-full h-full flex flex-col items-center justify-center relative z-10 overflow-hidden py-4">
         {/* Title section */}
         <div className="text-center mb-4 md:mb-8 w-full px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
             Guess the Faker
           </h1>
-          <p className="text-sm md:text-lg text-blue-300/80 tracking-wider">A game of deception and deduction</p>
+          <p className="text-xs sm:text-sm md:text-lg text-blue-300/80 tracking-wider">A game of deception and deduction</p>
         </div>  
 
-        {/* Card container */}
-        <div className={`w-full max-w-4xl bg-white/5 backdrop-blur-lg rounded-2xl p-4 md:p-8 flex flex-col lg:flex-row justify-between gap-4 md:gap-8 relative z-10 border border-white/10 shadow-2xl mb-4 ${cardShake ? 'animate-shake' : ''}`}>
+        {/* Card container - adjusted for mobile */}
+        <div className={`w-full max-w-4xl bg-white/5 backdrop-blur-lg rounded-2xl p-3 sm:p-4 md:p-8 flex flex-col lg:flex-row justify-between gap-3 sm:gap-4 md:gap-8 relative z-10 border border-white/10 shadow-2xl mb-2 sm:mb-4 ${cardShake ? 'animate-shake' : ''}`}>
           {/* ID Card Section */}
-          <div className="relative bg-gradient-to-br border-2 py-8 md:py-12 border-white/30 from-purple-600/90 to-blue-500/90 rounded-3xl p-4 md:p-6 shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500 flex-1 mb-6 lg:mb-0">
-            <div className="flex flex-col items-center gap-4 md:gap-6">
+          <div className="relative bg-gradient-to-br border-2 py-6 sm:py-8 md:py-12 border-white/30 from-purple-600/90 to-blue-500/90 rounded-3xl p-3 sm:p-4 md:p-6 shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500 flex-1 mb-4 sm:mb-6 lg:mb-0">
+            <div className="flex flex-col items-center gap-3 sm:gap-4 md:gap-6">
               {/* Avatar with glow effect */}
               <div className="relative group">
                 <div className="absolute inset-0 bg-yellow-400 rounded-full blur-lg opacity-50 group-hover:opacity-70 transition-all duration-500"></div>
                 <button
                   onClick={openAvatarModal}
-                  className="relative h-24 w-24 md:h-32 md:w-32 text-5xl md:text-7xl flex items-center justify-center rounded-full bg-white/10 border-4 border-yellow-300/80 hover:border-yellow-200 transition-all duration-300 shadow-lg hover:scale-105 backdrop-blur-sm"
+                  className="relative h-20 w-20 cursor-pointer sm:h-24 sm:w-24 md:h-32 md:w-32 text-4xl sm:text-5xl md:text-7xl flex items-center justify-center rounded-full bg-white/10 border-4 border-yellow-300/80 hover:border-yellow-200 transition-all duration-300 shadow-lg hover:scale-105 backdrop-blur-sm"
                   aria-label="Change avatar"
                 >
                   {selectedAvatar || '👤'}
@@ -137,14 +162,14 @@ const Home = () => {
               </div>
               
               <div className="text-center">
-                <label className="block text-base md:text-lg font-bold text-yellow-300 mb-1 font-mono tracking-wider animate-pulse">
+                <label className="block text-sm sm:text-base md:text-lg font-bold text-yellow-300 mb-1 font-mono tracking-wider animate-pulse">
                   YOUR AVATAR
                 </label>
                 <p className="text-xs text-yellow-400/70 font-mono animate-bounce">Click to change</p>
               </div>
               
               <div className="w-full">
-                <label htmlFor="nickname" className="block text-xs md:text-sm font-bold text-yellow-200 mb-2 font-mono">
+                <label htmlFor="nickname" className="block text-xs sm:text-xs md:text-sm font-bold text-yellow-200 mb-1 sm:mb-2 font-mono">
                   AGENT NAME:
                 </label>
                 <div className="relative">
@@ -152,12 +177,12 @@ const Home = () => {
                     id="nickname"
                     type="text"
                     placeholder="Enter codename..."
-                    className="w-full px-4 py-2 md:px-5 md:py-3 rounded-xl bg-black/40 border-2 border-yellow-400/50 focus:border-yellow-300 focus:outline-none transition-all duration-300 font-mono placeholder-yellow-200/40 text-yellow-100 shadow-lg text-sm md:text-base"
+                    className="w-full px-3 py-1 sm:px-4 sm:py-2 md:px-5 md:py-3 rounded-xl bg-black/40 border-2 border-yellow-400/50 focus:border-yellow-300 focus:outline-none transition-all duration-300 font-mono placeholder-yellow-200/40 text-yellow-100 shadow-lg text-xs sm:text-sm md:text-base"
                     value={nickname}
                     onChange={(e) => setNickname(e.target.value)}
                     maxLength={20}
                   />
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-yellow-400/70">
+                  <div className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-yellow-400/70">
                     ✎
                   </div>
                 </div>
@@ -166,10 +191,10 @@ const Home = () => {
           </div>
 
           {/* Room Actions Section */}
-          <div className="flex flex-col gap-4 md:gap-6 flex-1">
+          <div className="flex flex-col gap-3 sm:gap-4 md:gap-6 flex-1">
             {/* Room Code Input */}
             <div className="relative">
-              <label htmlFor="roomCode" className="block text-xs md:text-sm font-bold text-yellow-300 mb-2 font-mono tracking-wider">
+              <label htmlFor="roomCode" className="block text-xs sm:text-xs md:text-sm font-bold text-yellow-300 mb-1 sm:mb-2 font-mono tracking-wider">
                 ENTER ROOM CODE:
               </label>
               <div className="relative">
@@ -177,26 +202,26 @@ const Home = () => {
                   id="roomCode"
                   type="text"
                   placeholder="XXXXX"
-                  className={`w-full px-4 py-2 md:px-5 md:py-3 rounded-2xl bg-black/40 border-2 border-yellow-400/50 focus:border-yellow-300 focus:outline-none transition-all duration-300 font-mono placeholder-yellow-400/40 text-yellow-100 shadow-lg tracking-widest text-center text-lg md:text-xl ${roomInputShake ? 'animate-shake border-red-500' : ''}`}
+                  className={`w-full px-3 py-2 sm:px-4 sm:py-2 md:px-5 md:py-3 rounded-2xl bg-black/40 border-2 border-yellow-400/50 focus:border-yellow-300 focus:outline-none transition-all duration-300 font-mono placeholder-yellow-400/40 text-yellow-100 shadow-lg tracking-widest text-center text-base sm:text-lg md:text-xl ${roomInputShake ? 'animate-shake border-red-500' : ''}`}
                   value={roomCode}
                   onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                   maxLength={5}
                 />
-                <div className="absolute -bottom-5 right-0 text-xs text-yellow-400/70 font-mono">
+                <div className="absolute -bottom-4 sm:-bottom-5 right-0 text-xs text-yellow-400/70 font-mono">
                   {roomCode.length}/5
                 </div>
               </div>
             </div>
 
-            {/* Button Group */}
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-between mt-2 md:mt-4">
+            {/* Button Group - stacked on mobile */}
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-between mt-1 sm:mt-2 md:mt-4">
               {/* Create Room Button */}
               <div className="relative flex-1 group">
                 <div className="absolute inset-0 bg-purple-600 rounded-xl blur-md opacity-60 group-hover:opacity-80 transition-opacity"></div>
                 <Btn
                   text={'CREATE ROOM'}
                   handle={handleCreate}
-                  className="relative w-full py-3 md:py-4 bg-gradient-to-br from-purple-700/90 to-purple-900/90 border-2 border-purple-400/80 hover:border-purple-300 text-white font-mono font-bold tracking-wider shadow-lg hover:scale-[1.02] transition-transform text-sm md:text-base"
+                  className="relative w-full py-2 sm:py-3 md:py-4 bg-gradient-to-br from-purple-700/90 to-purple-900/90 border-2 border-purple-400/80 hover:border-purple-300 text-white font-mono font-bold tracking-wider shadow-lg hover:scale-[1.02] transition-transform text-xs sm:text-sm md:text-base"
                 />
               </div>
 
@@ -209,7 +234,7 @@ const Home = () => {
                   style={false}
                   dull={roomCode.length !== 5}
                   disabled={roomCode.length !== 5}
-                  className={`relative w-full py-3 md:py-4 border-2 font-mono font-bold tracking-wider shadow-lg transition-transform text-sm md:text-base`}
+                  className={`relative w-full py-2 sm:py-3 md:py-4 border-2 font-mono font-bold tracking-wider shadow-lg transition-transform text-xs sm:text-sm md:text-base`}
                 />
               </div>
             </div>
@@ -217,7 +242,7 @@ const Home = () => {
         </div>
 
         {/* Game Instructions */}
-        <div className="max-w-md text-center text-blue-300/70 text-xs md:text-sm mt-2 relative z-10 px-4">
+        <div className="max-w-md text-center text-blue-300/70 text-xs sm:text-xs md:text-sm mt-1 sm:mt-2 relative z-10 px-4">
           <p>Create a room or join with a 5-digit code. Can you spot the faker?</p>
         </div>
       </div>
@@ -260,10 +285,14 @@ const Home = () => {
         </div>
       )}
 
-
       {showHowToPlay && (
         <div className="w-screen h-screen bg-black/20 backdrop-blur-3xl fixed top-0 left-0 grid place-content-center z-40">
           <HowToPlay close={setShowHowToPlay}/>
+        </div>
+      )}
+      {showContribute && (
+        <div className="w-screen h-screen bg-black/20 backdrop-blur-3xl fixed top-0 left-0 grid place-content-center z-40">
+         <Contribute close={setShowContribute}/>
         </div>
       )}
 
