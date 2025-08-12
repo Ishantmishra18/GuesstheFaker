@@ -5,7 +5,7 @@ import { FaYoutube } from 'react-icons/fa';
 const HowToPlay = ({ close }) => {
   return (
     <motion.div
-      className="relative w-full max-w-3xl max-h-[90vh] bg-gray-900 text-white rounded-xl shadow-xl border border-gray-700 overflow-y-auto"
+      className="relative w-full max-w-3xl p-6 max-h-[90vh] bg-gray-900 text-white rounded-xl shadow-xl border border-gray-700"
       initial={{ scale: 0.95, y: 20 }}
       animate={{ scale: 1, y: 0 }}
       exit={{ scale: 0.95, y: 20 }}
@@ -13,14 +13,14 @@ const HowToPlay = ({ close }) => {
       {/* Close button */}
       <button 
         onClick={() => close(false)}
-        className="absolute top-4 right-4 text-xl text-gray-400 hover:text-white transition-colors p-2 z-50 cursor-pointer"
+        className="absolute top-4 right-12 text-xl text-gray-400 hover:text-white transition-colors p-2 z-50 cursor-pointer"
         aria-label="Close how to play"
       >
         ✕
       </button>
 
       {/* Content */}
-      <div className="h-full py-6 md:p-8">
+      <div className="h-full py-6 md:p-8 overflow-y-scroll">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-bold mb-3 text-white">

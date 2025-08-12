@@ -4,7 +4,7 @@ import { SiBuymeacoffee } from 'react-icons/si';
 
 const Contribute = ({ close }) => {
   return (
-         <div className="relative w-full max-w-4xl max-h-[90vh] bg-gradient-to-br overflow-y-scroll from-gray-900 to-gray-800 text-white rounded-2xl shadow-2xl overflow-hidden">
+         <div className="relative w-full max-w-4xl max-h-[90vh] bg-gradient-to-br  from-gray-900 to-gray-800 text-white rounded-2xl shadow-2xl border border-gray-700 overflow-hidden">
         {/* Close button */}
         <button 
           onClick={() => close(false)}
@@ -15,7 +15,7 @@ const Contribute = ({ close }) => {
         </button>
         
         {/* Scrollable content */}
-        <div className="h-full p-6 md:p-8">
+        <div className="h-full p-6 md:p-8 overflow-y-scroll">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-500">
