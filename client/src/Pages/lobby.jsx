@@ -125,12 +125,17 @@ const Lobby = () => {
         {isLoading && <Loader/>}
         {/* Left Column - Room Info */}
         <div className="flex-1 bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6 shadow-2xl">
+           <div className="flex justify-between w-full" >
+              <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                Game Lobby
+              </h1>
+              <div className="bg-green-500/10 text-green-400 px-4 py-2 rounded-full text-sm border border-green-500/20">
+                {players.length} {players.length === 1 ? 'Player' : 'Players'}
+              </div>
+            </div>
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                  Game Lobby
-                </h1>
                 <div className="flex items-center gap-2 mt-3">
                   <button className="font-mono bg-red-700/50 px-4 py-2 rounded-lg border border-red-600/50 cursor-pointer" onClick={() => navigate('/')}>
                     < IoExitOutline/>
@@ -154,9 +159,7 @@ const Lobby = () => {
                   </button>
                 </div>
               </div>
-              <div className="bg-green-500/10 text-green-400 px-4 py-2 rounded-full text-sm border border-green-500/20">
-                {players.length} {players.length === 1 ? 'Player' : 'Players'}
-              </div>
+             
             </div>
 
             <div className="flex-1 overflow-y-auto">
