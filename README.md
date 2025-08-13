@@ -15,6 +15,21 @@
 
 ---
 
+## 🖼️ Screenshots
+
+<div align="center" style="display: flex; justify-content: center; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+  <div style="flex: 1; min-width: 300px; max-width: 500px;">
+    <img src="./client/public/ss/screen.png" alt="Desktop View" style="width: 100%; height: auto; object-fit: contain; max-height: 300px;">
+    <p align="center" style="margin-top: 10px;">Desktop View</p>
+  </div>
+  <div style="flex: 1; min-width: 150px; max-width: 250px;">
+    <img src="./client/public/ss/mobile.jpg" alt="Mobile View" style="width: 100%; height: auto; object-fit: contain; max-height: 300px;">
+    <p align="center" style="margin-top: 10px;">Mobile View</p>
+  </div>
+</div>
+
+---
+
 ## 🕹️ How to Play
 
 1. **Join a Room**: Minimum **3 players** are required to start a game.
@@ -30,8 +45,20 @@
 
 - **Frontend**: React, Tailwind CSS, Socket.IO Client
 - **Backend**: Node.js, Express.js, Socket.IO Server
-- **Database**: MongoDB Atlas
 - **Hosting**: Render
+
+---
+
+## 👥 Contributions Welcome!
+Love the game? Want to improve it? We’d love your help! Here’s how:
+
+🐛 Report bugs by opening an issue.
+
+💡 Suggest features or improvements.
+
+🔧 Submit pull requests for fixes or enhancements.
+
+First time contributing? Check out GitHub’s guide to get started.
 
 ---
 
@@ -40,25 +67,36 @@
 ### ⚙️ Prerequisites
 
 - Node.js and npm installed
-- MongoDB running locally or via Atlas
 - Git installed
 
 ---
 
 ### 🔧 Step-by-Step Setup
 
+-Clone the repo
 ```bash
 # 1. Clone the repository
 git clone https://github.com/Ishantmishra18/GuesstheFaker.git
 cd GuesstheFaker
 
+```
+-Run Backend ( from root directory )
+```bash
 # 2. Run Backend
 cd server
 npm install
 npx nodemon server.js
+```
 
+
+-Run Frontend ( from root directory )
+```base
 # (in a new terminal)
 # 3. Run Frontend
 cd client
 npm install
 npm run dev
+
+
+
+
