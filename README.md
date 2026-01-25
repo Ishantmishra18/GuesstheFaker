@@ -17,12 +17,12 @@
 
 ## 🖼️ Screenshots
 
-<div align="center" style="display: flex; justify-content: center; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+<div align="center" style="display: flex; justify-content: center; gap: 20px; align-items: flex-start;">
   <div style="flex: 1; min-width: 300px; max-width: 500px;">
     <img src="./client/public/ss/screen.png" alt="Desktop View" style="width: 100%; height: auto; object-fit: contain; max-height: 300px;">
     <p align="center" style="margin-top: 10px;">Desktop View</p>
   </div>
-  <div style="flex: 1; width: 250px;">
+  <div style="flex: 1; width: 150px;">
     <img src="./client/public/ss/mobile.jpg" alt="Mobile View" style="width: 100%; height: auto; object-fit: contain; max-height: 300px;">
     <p align="center" style="margin-top: 10px;">Mobile View</p>
   </div>
@@ -96,6 +96,7 @@ npx nodemon server.js
 cd client
 npm install
 npm run dev
+
 
 
 
